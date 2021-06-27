@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Housing Price Estimation</title>
+  <style>
+
+    body {
+    background-image: url('static/images/wooden.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 1540px 750px;
+    }
+
+    h1   {color: black;}  
+    h2   {color: dark blue;}
+    p    {color: yellow;}  
+    
+    .button_css {
+        color: #494949 !important;
+        text-transform: uppercase;
+        text-decoration: none;
+        background: #ffffff;
+        padding: 20px;
+        border: 4px solid #494949 !important;
+        display: inline-block;
+        transition: all 0.4s ease 0s;
+    }
+
+    .button_css:hover {
+        color: #ffffff !important;
+        background: #f6b93b;
+        border-color: #f6b93b !important;
+        transition: all 0.4s ease 0s;
+    }
+
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #203864;
+        color: white;
+        text-align: center;
+    }
+    
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    select {
+        width: 168px;
+        height: 22px;
+    }
+    
+    select:focus {
+        min-width: 168px;
+        height: auto;
+    }
+
+  </style>
+  <script>
+    var cityObject = {
+      "Bangalore": ["Whitefield", "Sarjapur Road", "Electronic City", "Kanakpura Road", "Thanisandra", "Yelahanka", "Uttarahalli", "Hebbal", "Marathahalli", "Raja Rajeshwari Nagar"],
+      "Delhi": ["Lajpat Nagar", "Rohini Sector 24", "Greater Kailash", "Shahdara", "Laxmi Nagar", "Mehrauli", "Chittaranjan Park", "Saket", "Alaknanda", "Sarita Vihar"],
+      "Mumbai": ["Kharghar", "Thane West", "Mira Road East", "Ulwe", "Kalyan West", "Borivali West", "Nala Sopara", "Malad West", "Andheri West", "Kandivali East"]
+    }
+    window.onload = function() {
+      var citySel = document.getElementById("city");
+      var locSel = document.getElementById("loc");
+      for (var x in cityObject) {
+        citySel.options[citySel.options.length] = new Option(x, x);
+      }
+      citySel.onchange = function() {
+        locSel.length = 1;
+        var z = cityObject[citySel.value];
+        for (var i = 0; i < z.length; i++) {
+          locSel.options[locSel.options.length] = new Option(z[i], z[i]);
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div>
+    <img src="static/images/banner.png" class="w3-border w3-padding" style="width:80%">
+  </div>
+
+  <div class="login">
+    <center>
+    <form action="{{ url_for('predict')}}"method="post">
+        <h1>*Enter the Information of House to Estimate the Price*</h1>
+        <br>
+        <select name="city" id="city" required="required">
+          <option value="" selected="selected">Select City</option>
+        </select>
+        <br>
+        <select name="loc" id="loc" required="required">
+          <option value="" selected="selected">Select Location</option>
+        </select>
+        <br>
+        <select name="area_type" id="area_type">
+          <option value="">Select Area Type</option>
+          <option value="Super Built-up Area">Super Build Up</option>
+          <option value="Built-up Area">Built Up</option>
+        </select>
+        <br>
+        <select name="availability" id="availability" >
+          <option value="">Select Availability</option>
+          <option value="Ready To Move">Ready to Move</option>
+          <option value="Almost Ready">Almost Ready</option>
+        </select>
+        <br>
+        <input align="center" type="number" name="total_sqft_int" placeholder="Total Squre Foot" required="required" width="48" height="10" step="100"/><br>
+        <input align="center" type="number" name="bhk" placeholder="BHK" required="required" width="48" height="10" step="1"/><br>
+        <input align="center" type="number" name="bathrooms" placeholder="Bathrooms" required="required" width="48" height="10" step="1"/><br>
+    	<input align="center" type="number" name="balcony" placeholder="Balcony" required="required" width="48" height="10" step="1"/><br>
+    	<input align="center" type="number" name="price_per_sqft" placeholder="Price Per Squre Foot" required="required" width="48" height="10" step="500"/><br>
+    	<br>
+        <br>
+        
+        <div class="button_cont" align="center">
+          <a class="button_css" target="_blank" rel="nofollow noopener">
+            <button type="submit" class="btn btn-primary btn-block btn-large">
+              <strong>Predict House Price</strong>
+            </button>
+          </a>
+        </div>
+
+    </form>
+    </center>
+  <div>
+    <center>
+      <h2>{{ prediction_text }}</h2>
+    </center>
+  </div>
+
+  </div>
+  <div class="footer">
+    <p>Creaters:<br>
+      Vaibhav Jain, Vineet Raj Parashar, Vibhum Tripathi<br>
+    </p>
+  </div>
+</body>
+</html>
